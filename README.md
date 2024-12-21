@@ -1,10 +1,10 @@
 ### 1. Project Name
 **Tetris**
 
-### 2. Team Lead: ФИО, Project Developers: Кузнецов Макар, Teacher: Анатольев Алексей Владимириович
-- **Team Lead**: Иванов Иван Иванович
-- **Project Developers**: Петров Петр Петрович, Сидоров Сидор Сидорович
-- **Teacher**: Смирнов Александр Анатольевич
+### 2. Team Lead: ФИО, Project Developers: ФИО, Teacher: ФИО
+- **Team Lead**: 
+- **Project Developers**: Кузнецов Макар
+- **Teacher**: Анатольев Алексей Владимирович
 
 ### 3. Description of the program
 **i. Как должна запускаться игра, как ты планируешь оформить стартовое меню?**
