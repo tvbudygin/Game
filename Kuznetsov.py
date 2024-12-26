@@ -58,7 +58,7 @@ def game_loop():
         # Рисуем падающую фигуру
         draw_shape(current_shape, current_x, current_y)
 
-        # Обновляем позицию фигуры
+        # Обновляем  позицию фигуры
         current_y += BLOCK_SIZE
 
         # Если фигура достигла низа экрана, создаем новую
