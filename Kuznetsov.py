@@ -55,7 +55,7 @@ def game_loop():
             if event.type == pygame.QUIT:
                 running = False
 
-        # Рисуем падающую фигуру
+        # Рисуем  падающую фигуру
         draw_shape(current_shape, current_x, current_y)
 
         # Обновляем  позицию фигуры
