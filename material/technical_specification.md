@@ -2,7 +2,7 @@
 **Tetris**
 
 ### 2. Team Lead: ФИО, Project Developers: ФИО, Teacher: ФИО
-- **Team Lead**: 
+- **Team Lead**: Будыгин Тимофей
 - **Project Developers**: Кузнецов Макар
 - **Teacher**: Анатольев Алексей Владимирович
 
