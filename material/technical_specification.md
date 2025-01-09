@@ -3,7 +3,7 @@
 
 ### 2. Team Lead: ФИО, Project Developers: ФИО, Teacher: ФИО
 - **Team Lead**: Будыгин Тимофей
-- **Project Developers**: Кузнецов Макар
+- **Project Developers**: Кузнецов Макар, Резвушкин Николай
 - **Teacher**: Анатольев Алексей Владимирович
 
 ### 3. Description of the program
