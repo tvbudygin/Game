@@ -5,7 +5,7 @@ import random
 pygame.init()
 
 # Настройки экрана
-SCREEN_WIDTH = 270
+SCREEN_WIDTH = 300
 SCREEN_HEIGHT = 600
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Тетрис")
@@ -75,50 +75,10 @@ def get_random_shape():
     color = random.choice(COLORS)
     return Tetromino(shape, color)
 
-# Инициализация массива для хранения состояния экрана
-def init_screen_state():
-    screen_state = [[None for _ in range(SCREEN_WIDTH // BLOCK_SIZE)] for _ in range(SCREEN_HEIGHT // BLOCK_SIZE)]
-    return screen_state
-
-# Проверка столкновения с нижней частью экрана или другими фигурами
-def check_collision(tetromino, screen_state):
-    for row in range(len(tetromino.shape)):
-        for col in range(len(tetromino.shape[row])):
-            if tetromino.shape[row][col]:
-                x = (tetromino.x + col * BLOCK_SIZE) // BLOCK_SIZE
-                y = (tetromino.y + row * BLOCK_SIZE + BLOCK_SIZE) // BLOCK_SIZE
-                if y >= len(screen_state) or screen_state[y][x] is not None:
-                    return True
-    return False
-
-# Проверка достижения верха экрана
-def check_top_collision(screen_state):
-    for x in range(len(screen_state[0])):
-        if screen_state[0][x] is not None:
-            return True
-    return False
-
-# Добавление фигуры в состояние экрана
-def add_to_screen_state(tetromino, screen_state):
-    for row in range(len(tetromino.shape)):
-        for col in range(len(tetromino.shape[row])):
-            if tetromino.shape[row][col]:
-                x = (tetromino.x + col * BLOCK_SIZE) // BLOCK_SIZE
-                y = (tetromino.y + row * BLOCK_SIZE) // BLOCK_SIZE
-                screen_state[y][x] = tetromino.color
-
-# Рисование фигур из состояния экрана
-def draw_from_screen_state(screen_state):
-    for y in range(len(screen_state)):
-        for x in range(len(screen_state[y])):
-            if screen_state[y][x] is not None:
-                pygame.draw.rect(screen, screen_state[y][x], (x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE))
-
 # Главная игра
 def game_loop():
     clock = pygame.time.Clock()
     running = True
-    screen_state = init_screen_state()
     current_tetromino = get_random_shape()
 
     while running:
@@ -138,18 +98,11 @@ def game_loop():
         current_tetromino.draw()
 
         # Обновляем позицию фигуры
-        if not check_collision(current_tetromino, screen_state):
-            current_tetromino.y += BLOCK_SIZE
-        else:
-            add_to_screen_state(current_tetromino, screen_state)
-            if check_top_collision(screen_state):  # проверка достигла ли фигура самого верха
-                print("Игра окончена! Фигуры достигли верха экрана.")
-                running = False
-            else:
-                current_tetromino = get_random_shape()
+        current_tetromino.y += BLOCK_SIZE
 
-        # Рисуем фигуры из состояния экрана
-        draw_from_screen_state(screen_state)
+        # Если фигура достигла низа экрана, создаем новую
+        if current_tetromino.y + len(current_tetromino.shape) * BLOCK_SIZE > SCREEN_HEIGHT:
+            current_tetromino = get_random_shape()
 
         pygame.display.flip()
 
