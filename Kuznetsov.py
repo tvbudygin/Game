@@ -137,4 +137,4 @@ class Menu:
 # Запуск игры
 game = Menu()
 game.game_loop()
-# конец
+#  конец
