@@ -1,0 +1,1 @@
+Чтобы программа работала нормально, нужно в терминале при помощи команды pip install установить библиотеку pygame (pip install pygame) или через настройки pycharm -> Project Game -> Python interpreter -> '+' -> pygame.

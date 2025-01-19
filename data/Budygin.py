@@ -7,7 +7,7 @@ ALL_SPRITES = pygame.sprite.Group()
 ALL_SPRITES1 = pygame.sprite.Group()
 # Инициализация Pygame
 pygame.init()
-
+   
 # Настройки экрана
 SCREEN_WIDTH = 300
 SCREEN_HEIGHT = 600
@@ -57,7 +57,7 @@ SHAPES = [
 
 # фукцию загрузки изображений
 def load_image(name):
-    fullname = os.path.join('images', name)
+    fullname = os.path.join('../images', name)
     if not os.path.isfile(fullname):
         print(f'Файл с изобрадением {fullname} не найден')
         sys.exit()
@@ -222,7 +222,7 @@ class Menu:
                 clock.tick(10)
             # если состояние правила, открывем дургое окно
             elif sostoanie == "rules":
-                from Rules import Rules_c
+                from data.Rules import Rules_c
                 a = Rules_c()
                 a.rulse_f()
                 # если закрыли, то возвращаем меню
@@ -231,7 +231,7 @@ class Menu:
                 pygame.display.set_caption("Тетрис")
 
             elif sostoanie == "exit":
-                from Exit import Exit_c
+                from data.Exit import Exit_c
                 a = Exit_c()
                 b = a.exit_f()
                 print(b)
