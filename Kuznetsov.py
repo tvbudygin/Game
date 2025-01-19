@@ -137,6 +137,6 @@ class Menu:
 
         pygame.quit()
 
-  # Запуск игры
+ # Запуск игры
 game = Menu()
 game.game_loop()
