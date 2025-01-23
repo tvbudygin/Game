@@ -57,12 +57,13 @@ SHAPES = [
 
 # фукцию загрузки изображений
 def load_image(name):
-    fullname = os.path.join('images', name)
+    fullname = os.path.join('Game/images', name)
     if not os.path.isfile(fullname):
         print(f'Файл с изобрадением {fullname} не найден')
         sys.exit()
     image = pygame.image.load(fullname)
     return image
+
 
 # создаем фон
 class Fon(pygame.sprite.Sprite):
@@ -234,13 +235,23 @@ class Menu:
                 from Exit import Exit_c
                 a = Exit_c()
                 b = a.exit_f()
-                print(b)
+                # закрывем все
                 if not b:
                     running = False
+                # если ззахотели вернуться, то возвращаем меню
                 else:
                     sostoanie = "menu"
                     pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
                     pygame.display.set_caption("Тетрис")
+
+            elif sostoanie == "game":
+                from Rezvushkin import game_loop
+                game_loop()
+                # если закрыли, то возвращаем меню
+                sostoanie = "menu"
+                pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+                pygame.display.set_caption("Тетрис")
+
         pygame.quit()
 
 
