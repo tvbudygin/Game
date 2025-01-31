@@ -1,13 +1,14 @@
 import pygame
 import random
+from score import Score  # Импортируем класс Score из файла score.py
 
 # Инициализация Pygame
 pygame.init()
 
 # Настройки экрана
-SCREEN_WIDTH = 270
-SCREEN_HEIGHT = 600
-screen = pygame.display.set_mode((600, 600))
+SCREEN_WIDTH = 600  # Ширина экрана
+SCREEN_HEIGHT = 600  # Высота экрана
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Тетрис")
 
 # Цвета
@@ -16,6 +17,10 @@ BLACK = (0, 0, 0)
 
 # Размеры блоков
 BLOCK_SIZE = 30
+
+# Размеры игрового поля
+FIELD_WIDTH = 270  # Ширина игрового поля
+FIELD_HEIGHT = 600  # Высота игрового поля
 
 # Цвета фигур
 COLORS = [
@@ -49,17 +54,21 @@ SHAPES = [
 
 
 def draw():
+    # Отрисовка сетки для игрового поля
     h = 0
     w = 0
-    for i in range(SCREEN_HEIGHT // 30):
-        for e in range(SCREEN_WIDTH // 30):
+    for i in range(FIELD_HEIGHT // BLOCK_SIZE):
+        for e in range(FIELD_WIDTH // BLOCK_SIZE):
             color = pygame.Color(255, 255, 255)
             hsv = color.hsla
             color.hsla = (hsv[0], hsv[1], hsv[2] - 50, hsv[3])
-            pygame.draw.rect(screen, color, (w, h, 30, 30), 1)
-            w += 30
-        h += 30
+            pygame.draw.rect(screen, color, (w, h, BLOCK_SIZE, BLOCK_SIZE), 1)
+            w += BLOCK_SIZE
+        h += BLOCK_SIZE
         w = 0
+
+    # Отрисовка разделительной линии
+    pygame.draw.line(screen, WHITE, (FIELD_WIDTH, 0), (FIELD_WIDTH, SCREEN_HEIGHT), 2)
 
 
 # Класс для фигур
@@ -67,7 +76,7 @@ class Tetromino:
     def __init__(self, shape, color):
         self.shape = shape
         self.color = color
-        self.x = (SCREEN_WIDTH // 2) - (len(shape[0]) * BLOCK_SIZE // 2)
+        self.x = (FIELD_WIDTH // 2) - (len(shape[0]) * BLOCK_SIZE // 2)
         self.y = 0
 
     def draw(self):
@@ -81,8 +90,8 @@ class Tetromino:
         new_x = self.x + dx
         if new_x < 0:
             new_x = 0
-        elif new_x + len(self.shape[0]) * BLOCK_SIZE > SCREEN_WIDTH:
-            new_x = SCREEN_WIDTH - len(self.shape[0]) * BLOCK_SIZE
+        elif new_x + len(self.shape[0]) * BLOCK_SIZE > FIELD_WIDTH:
+            new_x = FIELD_WIDTH - len(self.shape[0]) * BLOCK_SIZE
         self.x = new_x
 
     def move_piece_y(self, dy):
@@ -94,18 +103,13 @@ class Tetromino:
         rows = len(self.shape)
         cols = len(self.shape[0])
         new_shape = [[0] * rows for _ in range(cols)]  # Создаем пустую матрицу с перевернутыми размерами
-        print(new_shape)
         for row in range(rows):
-            print(row, rows)
             for col in range(cols):
-                print(col, cols)
-                print(rows - 1 - row)
                 new_shape[col][rows - row - 1] = self.shape[row][col]
-        print(new_shape)
 
         # Проверяем, не выходит ли фигура за границы экрана
-        if self.x + len(new_shape[0]) * BLOCK_SIZE <= SCREEN_WIDTH and self.y + len(
-                new_shape) * BLOCK_SIZE <= SCREEN_HEIGHT:
+        if self.x + len(new_shape[0]) * BLOCK_SIZE <= FIELD_WIDTH and self.y + len(
+                new_shape) * BLOCK_SIZE <= FIELD_HEIGHT:
             self.shape = new_shape
 
 
@@ -118,7 +122,7 @@ def get_random_shape():
 
 # Инициализация массива для хранения состояния экрана
 def init_screen_state():
-    screen_state = [[None for _ in range(SCREEN_WIDTH // BLOCK_SIZE)] for _ in range(SCREEN_HEIGHT // BLOCK_SIZE)]
+    screen_state = [[None for _ in range(FIELD_WIDTH // BLOCK_SIZE)] for _ in range(FIELD_HEIGHT // BLOCK_SIZE)]
     return screen_state
 
 
@@ -166,10 +170,12 @@ def game_loop():
     running = True
     screen_state = init_screen_state()
     current_tetromino = get_random_shape()
+    score = Score()  # Инициализация счета
 
     while running:
         screen.fill((0, 0, 0))
         draw()
+
         # Отслеживание событий
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -197,9 +203,14 @@ def game_loop():
                 running = False
             else:
                 current_tetromino = get_random_shape()
+                score.increase_score(10)  # Увеличиваем счет на 10 очков за каждую фигуру
 
         # Рисуем фигуры из состояния экрана
         draw_from_screen_state(screen_state)
+
+        # Отрисовка счета в правой части экрана
+        score.draw_score(screen)
+
         pygame.display.flip()
 
         # Задержка, чтобы фигуры падали не слишком быстро
