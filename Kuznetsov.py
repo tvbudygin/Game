@@ -50,7 +50,7 @@ SHAPES = [
 
 class Menu:
     def __init__(self):
-        self.score = 0
+        self.score = 0  # Инициализация счета
         self.grid = [[0] * (SCREEN_WIDTH // BLOCK_SIZE) for _ in range(SCREEN_HEIGHT // BLOCK_SIZE)]
 
     # Функция для выбора случайной фигуры
@@ -75,7 +75,7 @@ class Menu:
         for row in lines_to_clear:
             del self.grid[row]
             self.grid.insert(0, [0] * (SCREEN_WIDTH // BLOCK_SIZE))
-            self.score += 100
+            self.score += 100  # Увеличиваем счет
 
     # Обновление сетки при падении фигуры
     def update_grid(self, shape, x, y):
@@ -123,15 +123,16 @@ class Menu:
                 current_y = 0
                 color = random.choice(COLORS)
 
-            # Рисуем сетку и счет
+            # Рисуем сетку
             for row in range(len(self.grid)):
                 for col in range(len(self.grid[row])):
                     if self.grid[row][col]:
                         pygame.draw.rect(screen, WHITE, (col * BLOCK_SIZE, row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE))
 
+            # Отображаем счет в правой части экрана
             font = pygame.font.Font(None, 36)
             score_text = font.render(f"Score: {self.score}", True, WHITE)
-            screen.blit(score_text, (10, 10))
+            screen.blit(score_text, (SCREEN_WIDTH - 150, 20))  # Отображаем в правой части
 
             pygame.display.flip()
 
@@ -140,6 +141,23 @@ class Menu:
 
         pygame.quit()
 
+
+class Score:
+    def __init__(self):
+        self.score = 0  # Начальный счет
+        self.font = pygame.font.SysFont("Arial", 30)  # Шрифт для отображения
+
+    def increase_score(self, points):
+        """Увеличиваем счет на определенное количество очков."""
+        self.score += points
+
+    def draw_score(self, screen):
+        """Отображаем текущий счет на экране."""
+        score_text = self.font.render(f"Score: {self.score}", True, (255, 255, 255))
+        screen.blit(score_text, (10, 10))  # Рисуем счет в левом верхнем углу
+
+
+# Запуск игры
 
 # Запуск игры
 game = Menu()

@@ -104,9 +104,14 @@ class Tetromino:
         rows = len(self.shape)
         cols = len(self.shape[0])
         new_shape = [[0] * rows for _ in range(cols)]  # Создаем пустую матрицу с перевернутыми размерами
+        print(new_shape)
         for row in range(rows):
+            print(row, rows)
             for col in range(cols):
+                print(col, cols)
+                print(rows - 1 - row)
                 new_shape[col][rows - row - 1] = self.shape[row][col]
+        print(new_shape)
 
         # Проверяем, не выходит ли фигура за границы экрана
         if self.x + len(new_shape[0]) * BLOCK_SIZE <= SCREEN_WIDTH and self.y + len(
