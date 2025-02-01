@@ -2,7 +2,8 @@ import os
 import sys
 import pygame
 import random
-
+from Rules import Rules_c
+from Exit import Exit_c
 ALL_SPRITES = pygame.sprite.Group()
 ALL_SPRITES1 = pygame.sprite.Group()
 # Инициализация Pygame
@@ -57,7 +58,7 @@ SHAPES = [
 
 # фукцию загрузки изображений
 def load_image(name):
-    fullname = os.path.join('Game/images', name)
+    fullname = os.path.join('../images', name)
     if not os.path.isfile(fullname):
         print(f'Файл с изобрадением {fullname} не найден')
         sys.exit()
@@ -122,10 +123,11 @@ class Menu:
     # Главная игра
     def game_loop(self, sostoanie='menu', game_screnn_state='', score=0, max_score=0, inverted_mode=False):
         try:
-            fon = Fon()
-            play = Play()
-            rules = Rules()
-            exits = Exit()
+            # создаем фон и кнопки
+            Fon()
+            Play()
+            Rules()
+            Exit()
             screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
             clock = pygame.time.Clock()
             running = True
@@ -233,7 +235,7 @@ class Menu:
                         clock.tick(10)
                     # если состояние правила, открывем дургое окно
                     elif sostoanie == "rules":
-                        from Rules import Rules_c
+
                         a = Rules_c()
                         a.rulse_f()
                         # если закрыли, то возвращаем меню
@@ -242,7 +244,7 @@ class Menu:
                         pygame.display.set_caption("Тетрис")
 
                     elif sostoanie == "exit":
-                        from Exit import Exit_c
+
                         a = Exit_c()
                         b = a.exit_f()
                         # закрывем все
@@ -256,7 +258,8 @@ class Menu:
 
                     elif sostoanie == "game":
                         from Rezvushkin import game_loop
-                        game_loop(screen_state=game_screnn_state, score=score, max_score=max_score, inverted_mode=inverted_mode)
+                        game_loop(screen_state=game_screnn_state, score=score, max_score=max_score,
+                                  inverted_mode=inverted_mode)
                         # если закрыли, то возвращаем меню
                         sostoanie = "menu"
                         pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -271,7 +274,6 @@ class Menu:
             sys.exit()
 
 
-# создаем фон и кнопки
 if __name__ == "__main__":
     # Запуск игры
     game = Menu()

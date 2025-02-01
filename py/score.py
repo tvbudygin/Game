@@ -1,5 +1,6 @@
 import pygame
 
+
 class Score:
     def __init__(self):
         self.score = 0  # Начальный счет

@@ -160,5 +160,6 @@ class Score:
 # Запуск игры
 
 # Запуск игры
-game = Menu()
-game.game_loop()
+if __name__ == "__main__":
+    game = Menu()
+    game.game_loop()
