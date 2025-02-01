@@ -47,6 +47,7 @@ SHAPES = [
     [[0, 0, 1], [1, 1, 1]],  # J-образная
 ]
 
+
 class Menu:
     def __init__(self):
         self.score = 0
@@ -111,8 +112,10 @@ class Menu:
 
             # Если фигура достигла низа экрана или другой фигуры
             if current_y + len(current_shape) * BLOCK_SIZE > SCREEN_HEIGHT or \
-                    any(self.grid[(current_y + row * BLOCK_SIZE) // BLOCK_SIZE][(current_x + col * BLOCK_SIZE) // BLOCK_SIZE]
-                        for row in range(len(current_shape)) for col in range(len(current_shape[row])) if current_shape[row][col]):
+                    any(self.grid[(current_y + row * BLOCK_SIZE) // BLOCK_SIZE][
+                            (current_x + col * BLOCK_SIZE) // BLOCK_SIZE]
+                        for row in range(len(current_shape)) for col in range(len(current_shape[row])) if
+                        current_shape[row][col]):
                 self.update_grid(current_shape, current_x, current_y - BLOCK_SIZE)
                 self.check_lines()
                 current_shape = self.get_random_shape()
@@ -137,6 +140,7 @@ class Menu:
 
         pygame.quit()
 
- # Запуск игры
+
+# Запуск игры
 game = Menu()
 game.game_loop()
