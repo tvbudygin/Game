@@ -33,7 +33,7 @@ class Rules_c:
 
     def rulse_f(self):
         import pygame
-        size1 = (1000, 750)
+        size1 = (1000, 850)
         pygame.display.set_caption("Правила Тетриса")
         screen1 = pygame.display.set_mode(size1)
         running1 = True
