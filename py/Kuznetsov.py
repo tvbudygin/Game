@@ -104,36 +104,39 @@ class Menu:
         self.music_player.play_game_music()
 
         while running:
-            screen.fill(BLACK)
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
+            try:
+                screen.fill(BLACK)
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        running = False
 
-            self.draw_shape(current_shape, current_x, current_y, color)
-            current_y += BLOCK_SIZE
+                self.draw_shape(current_shape, current_x, current_y, color)
+                current_y += BLOCK_SIZE
 
-            if current_y + len(current_shape) * BLOCK_SIZE > SCREEN_HEIGHT or \
-                    any(self.grid[(current_y + row * BLOCK_SIZE) // BLOCK_SIZE][
-                            (current_x + col * BLOCK_SIZE) // BLOCK_SIZE]
-                        for row in range(len(current_shape)) for col in range(len(current_shape[row])) if
-                        current_shape[row][col]):
-                self.update_grid(current_shape, current_x, current_y - BLOCK_SIZE)
-                self.check_lines()
-                current_shape = self.get_random_shape()
-                current_x = (SCREEN_WIDTH // 2) - (len(current_shape[0]) * BLOCK_SIZE // 2)
-                current_y = 0
-                color = random.choice(COLORS)
+                if current_y + len(current_shape) * BLOCK_SIZE > SCREEN_HEIGHT or \
+                        any(self.grid[(current_y + row * BLOCK_SIZE) // BLOCK_SIZE][
+                                (current_x + col * BLOCK_SIZE) // BLOCK_SIZE]
+                            for row in range(len(current_shape)) for col in range(len(current_shape[row])) if
+                            current_shape[row][col]):
+                    self.update_grid(current_shape, current_x, current_y - BLOCK_SIZE)
+                    self.check_lines()
+                    current_shape = self.get_random_shape()
+                    current_x = (SCREEN_WIDTH // 2) - (len(current_shape[0]) * BLOCK_SIZE // 2)
+                    current_y = 0
+                    color = random.choice(COLORS)
 
-            for row in range(len(self.grid)):
-                for col in range(len(self.grid[row])):
-                    if self.grid[row][col]:
-                        pygame.draw.rect(screen, WHITE, (col * BLOCK_SIZE, row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE))
+                for row in range(len(self.grid)):
+                    for col in range(len(self.grid[row])):
+                        if self.grid[row][col]:
+                            pygame.draw.rect(screen, WHITE, (col * BLOCK_SIZE, row * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE))
 
-            font = pygame.font.Font(None, 36)
-            score_text = font.render(f"Score: {self.score}", True, WHITE)
-            screen.blit(score_text, (SCREEN_WIDTH - 150, 20))
-            pygame.display.flip()
-            clock.tick(10)
+                font = pygame.font.Font(None, 36)
+                score_text = font.render(f"Score: {self.score}", True, WHITE)
+                screen.blit(score_text, (SCREEN_WIDTH - 150, 20))
+                pygame.display.flip()
+                clock.tick(10)
+            except Exception as e:
+                print(e)
 
         self.music_player.stop_music()
         pygame.quit()
