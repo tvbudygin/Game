@@ -4,6 +4,7 @@ import pygame
 import random
 from Rules import Rules_c
 from Exit import Exit_c
+
 ALL_SPRITES = pygame.sprite.Group()
 ALL_SPRITES1 = pygame.sprite.Group()
 # Инициализация Pygame
@@ -260,6 +261,8 @@ class Menu:
                         from Rezvushkin import game_loop
                         game_loop(screen_state=game_screnn_state, score=score, max_score=max_score,
                                   inverted_mode=inverted_mode)
+                        from Kuznetsov import MusicPlayer
+                        MusicPlayer()
                         # если закрыли, то возвращаем меню
                         sostoanie = "menu"
                         pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -275,6 +278,10 @@ class Menu:
 
 
 if __name__ == "__main__":
-    # Запуск игры
+    from Kuznetsov import MusicPlayer
+
+    music_player = MusicPlayer("game_music.mp3")  # Укажите правильный путь к файлу
+    music_player.play_game_music()  # Запускаем музыку перед игрой
+
     game = Menu()
-    game.game_loop()
+    game.game_loop()  # Запуск игры
