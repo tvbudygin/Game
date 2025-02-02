@@ -1,4 +1,4 @@
-from Game.py.Budygin import Menu
+from Budygin import Menu
 
 if __name__ == "__main__":
     # Запуск игры
