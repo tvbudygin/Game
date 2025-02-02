@@ -138,6 +138,7 @@ class Menu:
         self.music_player.stop_music()
         pygame.quit()
 
+
 class Score:
     def __init__(self):
         self.score = 0  # Начальный счет
@@ -154,6 +155,6 @@ class Score:
 
 
 if __name__ == "__main__":
-    music_player = MusicPlayer("game_music.mp3")  # Укажите путь к файлу музыки
+    music_player = MusicPlayer("../data/music/game_music.mp3")
     game = Menu(music_player)
     game.game_loop()

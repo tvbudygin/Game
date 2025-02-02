@@ -59,7 +59,7 @@ SHAPES = [
 
 # фукцию загрузки изображений
 def load_image(name):
-    fullname = os.path.join('../images', name)
+    fullname = os.path.join('../data/images', name)
     if not os.path.isfile(fullname):
         print(f'Файл с изобрадением {fullname} не найден')
         sys.exit()
@@ -124,6 +124,10 @@ class Menu:
     # Главная игра
     def game_loop(self, sostoanie='menu', game_screnn_state='', score=0, max_score=0, inverted_mode=False):
         try:
+            from Kuznetsov import MusicPlayer
+
+            music_player = MusicPlayer("../data/music/game_music.mp3")
+            music_player.play_game_music()
             # создаем фон и кнопки
             Fon()
             Play()
@@ -261,8 +265,7 @@ class Menu:
                         from Rezvushkin import game_loop
                         game_loop(screen_state=game_screnn_state, score=score, max_score=max_score,
                                   inverted_mode=inverted_mode)
-                        from Kuznetsov import MusicPlayer
-                        MusicPlayer()
+
                         # если закрыли, то возвращаем меню
                         sostoanie = "menu"
                         pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -278,10 +281,5 @@ class Menu:
 
 
 if __name__ == "__main__":
-    from Kuznetsov import MusicPlayer
-
-    music_player = MusicPlayer("game_music.mp3")  # Укажите правильный путь к файлу
-    music_player.play_game_music()  # Запускаем музыку перед игрой
-
     game = Menu()
-    game.game_loop()  # Запуск игры
+    game.game_loop()

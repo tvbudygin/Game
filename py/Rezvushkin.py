@@ -73,6 +73,7 @@ class Tetromino:
         self.color = color
         self.x = (SCREEN_WIDTH // 2) - (len(shape[0]) * BLOCK_SIZE // 2)
         self.x = (self.x // BLOCK_SIZE) * BLOCK_SIZE
+        # разное елси перевернутый экран
         if not inverted_mode:
             self.y = 0
         else:
@@ -94,6 +95,7 @@ class Tetromino:
         self.x = new_x
 
     def move_piece_y(self, dy, inverted_mode=False):
+        # разное елси перевернутый экран
         if not inverted_mode:
             self.y = self.y + dy
         else:
@@ -104,14 +106,9 @@ class Tetromino:
         rows = len(self.shape)
         cols = len(self.shape[0])
         new_shape = [[0] * rows for _ in range(cols)]  # Создаем пустую матрицу с перевернутыми размерами
-        print(new_shape)
         for row in range(rows):
-            print(row, rows)
             for col in range(cols):
-                print(col, cols)
-                print(rows - 1 - row)
                 new_shape[col][rows - row - 1] = self.shape[row][col]
-        print(new_shape)
 
         # Проверяем, не выходит ли фигура за границы экрана
         if self.x + len(new_shape[0]) * BLOCK_SIZE <= SCREEN_WIDTH and self.y + len(
@@ -138,6 +135,7 @@ def check_collision(tetromino, screen_state, inverted_mode=False):
         for col in range(len(tetromino.shape[row])):
             if tetromino.shape[row][col]:
                 x = (tetromino.x + col * BLOCK_SIZE) // BLOCK_SIZE
+                # разное елси перевернутый экран
                 if not inverted_mode:
                     y = (tetromino.y + row * BLOCK_SIZE + BLOCK_SIZE) // BLOCK_SIZE
                     if y >= len(screen_state) or screen_state[y][x] is not None:
@@ -151,6 +149,7 @@ def check_collision(tetromino, screen_state, inverted_mode=False):
 
 # Проверка достижения верха экрана
 def check_top_collision(screen_state, inverted_mode=False):
+    # разное елси перевернутый экран
     if not inverted_mode:
         for x in range(len(screen_state[0])):
             if screen_state[0][x] is not None:
@@ -184,6 +183,7 @@ def draw_from_screen_state(screen_state):
 # перемещение фишуры вниз
 def drop(tetromino, screen_state, inverted_mode=False):
     while not check_collision(tetromino, screen_state, inverted_mode):
+        # разное елси перевернутый экран
         if not inverted_mode:
             tetromino.y += BLOCK_SIZE
         else:
@@ -196,6 +196,7 @@ def change_screen_state(screen_state, inverted_mode=False):
     len_clear = len(screen_state) - len(new_screen_state)
 
     for _ in range(len_clear):
+        # разное елси перевернутый экран
         if not inverted_mode:
             new_screen_state.insert(0, [None] * len(screen_state[0]))
         else:
@@ -224,6 +225,7 @@ class Clears(pygame.sprite.Sprite):
         self.rect = pygame.Rect(350, 412.5, 75, 75)
 
 
+# добавляем в spites
 class Win(pygame.sprite.Sprite):
     image = load_image("win.png")
 
@@ -233,6 +235,7 @@ class Win(pygame.sprite.Sprite):
         self.rect = pygame.Rect(350, 150, 200, 200)
 
 
+# добавляем в spites
 class Fail(pygame.sprite.Sprite):
     image = load_image("fail.png")
 
@@ -242,6 +245,7 @@ class Fail(pygame.sprite.Sprite):
         self.rect = pygame.Rect(350, 150, 200, 200)
 
 
+# добавляем в spites
 class Q1(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__(ALL_SPRITES1)
@@ -250,6 +254,7 @@ class Q1(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=(450, 100))
 
 
+# добавляем в spites
 class Q2(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__(ALL_SPRITES2)
@@ -260,6 +265,10 @@ class Q2(pygame.sprite.Sprite):
 
 # Главная игра
 def game_loop(screen_state='', score=0, max_score=0, inverted_mode=False):
+    from Kuznetsov import MusicPlayer
+    music_player = MusicPlayer("../data/music/game_music1.mp3")
+    music_player.play_game_music()
+    # добавялем spites
     Reverses()
     Clears()
     Win()
@@ -314,12 +323,16 @@ def game_loop(screen_state='', score=0, max_score=0, inverted_mode=False):
                 elif event.key == pygame.K_ESCAPE:
                     from Budygin import Menu
                     return Menu().game_loop(game_screnn_state=screen_state, score=score, max_score=max_score)
+                # очистка
                 elif event.key == pygame.K_q:
                     is_paused = False
                     show_sprites = False
                     screen_state = init_screen_state()
                     current_tetromino = get_random_shape(inverted_mode)
                     score = 0
+                    music_player = MusicPlayer("../data/music/game_music1.mp3")
+                    music_player.play_game_music()
+                # переворот
                 elif event.key == pygame.K_e:
                     inverted_mode = not inverted_mode
                     screen_state = screen_state[::-1]
@@ -337,6 +350,9 @@ def game_loop(screen_state='', score=0, max_score=0, inverted_mode=False):
                     score = 0
                     is_paused = False
                     show_sprites = False
+                    music_player = MusicPlayer("../data/music/game_music1.mp3")
+                    music_player.play_game_music()
+                # переворот
                 if rect_reverse.collidepoint(mouse_pos):
                     inverted_mode = not inverted_mode
                     screen_state = screen_state[::-1]
@@ -364,6 +380,7 @@ def game_loop(screen_state='', score=0, max_score=0, inverted_mode=False):
             else:
                 # добавляем и очищаем экран
                 add_to_screen_state(current_tetromino, screen_state)
+                # считаем очки
                 if not is_paused:
                     score += 50
                 screen_state, len_clear = change_screen_state(screen_state, inverted_mode)
@@ -375,6 +392,7 @@ def game_loop(screen_state='', score=0, max_score=0, inverted_mode=False):
                     score += (1000 * (len_clear + 1))
                 if max_score <= score:
                     max_score = score
+                # победа
                 if score >= 15000:
                     show_sprites = True
                 elif check_top_collision(screen_state, inverted_mode):  # проверка достигла ли фигура самого верха
@@ -382,6 +400,7 @@ def game_loop(screen_state='', score=0, max_score=0, inverted_mode=False):
                     show_sprites = True
                 else:
                     current_tetromino = get_random_shape(inverted_mode)
+        # победа/проигрышь рисуем
         if show_sprites:
             if score >= 15000:
                 ALL_SPRITES1.draw(screen)
@@ -389,10 +408,12 @@ def game_loop(screen_state='', score=0, max_score=0, inverted_mode=False):
             elif check_top_collision(screen_state, inverted_mode):
                 ALL_SPRITES2.draw(screen)
 
+        # рисуем score
         font = pygame.font.Font(None, 36)
         score_text = font.render(f"Score: {str(score)}", True, WHITE)
         screen.blit(score_text, (400, 10))
 
+        # рисуем max_score
         font = pygame.font.Font(None, 36)
         score_text = font.render(f"Max_score: {str(max_score)}", True, WHITE)
         screen.blit(score_text, (390, 550))
