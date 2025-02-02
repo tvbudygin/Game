@@ -297,116 +297,120 @@ def game_loop(screen_state='', score=0, max_score=0, inverted_mode=False):
                 return Menu().game_loop(game_screnn_state=screen_state, score=score, max_score=max_score,
                                         inverted_mode=inverted_mode)
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT or event.key == pygame.K_a:
-                    if not check_collision(current_tetromino, screen_state, inverted_mode):
-                        current_tetromino.move_piece(-BLOCK_SIZE)
-                elif event.key == pygame.K_RIGHT or event.key == pygame.K_d:
-                    if not check_collision(current_tetromino, screen_state, inverted_mode):
-                        current_tetromino.move_piece(BLOCK_SIZE)
-                elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
-                    if not inverted_mode:
+                try:
+                    if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                         if not check_collision(current_tetromino, screen_state, inverted_mode):
-                            current_tetromino.move_piece_y(BLOCK_SIZE, inverted_mode)
-                    else:
+                            current_tetromino.move_piece(-BLOCK_SIZE)
+                    elif event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                         if not check_collision(current_tetromino, screen_state, inverted_mode):
-                            current_tetromino.rotate()
-                elif event.key == pygame.K_UP or event.key == pygame.K_w:
-                    if not inverted_mode:
+                            current_tetromino.move_piece(BLOCK_SIZE)
+                    elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
+                        if not inverted_mode:
+                            if not check_collision(current_tetromino, screen_state, inverted_mode):
+                                current_tetromino.move_piece_y(BLOCK_SIZE, inverted_mode)
+                        else:
+                            if not check_collision(current_tetromino, screen_state, inverted_mode):
+                                current_tetromino.rotate()
+                    elif event.key == pygame.K_UP or event.key == pygame.K_w:
+                        if not inverted_mode:
+                            if not check_collision(current_tetromino, screen_state, inverted_mode):
+                                current_tetromino.rotate()
+                        else:
+                            if not check_collision(current_tetromino, screen_state, inverted_mode):
+                                current_tetromino.move_piece_y(BLOCK_SIZE, inverted_mode)
+                    elif event.key == pygame.K_SPACE:
                         if not check_collision(current_tetromino, screen_state, inverted_mode):
-                            current_tetromino.rotate()
-                    else:
-                        if not check_collision(current_tetromino, screen_state, inverted_mode):
-                            current_tetromino.move_piece_y(BLOCK_SIZE, inverted_mode)
-                elif event.key == pygame.K_SPACE:
-                    if not check_collision(current_tetromino, screen_state, inverted_mode):
-                        drop(current_tetromino, screen_state, inverted_mode)
-                elif event.key == pygame.K_ESCAPE:
-                    from Budygin import Menu
-                    return Menu().game_loop(game_screnn_state=screen_state, score=score, max_score=max_score)
+                            drop(current_tetromino, screen_state, inverted_mode)
+                    elif event.key == pygame.K_ESCAPE:
+                        from Budygin import Menu
+                        return Menu().game_loop(game_screnn_state=screen_state, score=score, max_score=max_score)
                 # очистка
-                elif event.key == pygame.K_q:
-                    is_paused = False
-                    show_sprites = False
-                    screen_state = init_screen_state()
-                    current_tetromino = get_random_shape(inverted_mode)
-                    score = 0
-                    music_player = MusicPlayer("../data/music/game_music1.mp3")
-                    music_player.play_game_music()
-                # переворот
-                elif event.key == pygame.K_e:
-                    inverted_mode = not inverted_mode
-                    screen_state = screen_state[::-1]
-                    rows = len(screen_state)
-                    old_row = current_tetromino.y // BLOCK_SIZE
-                    new_row = (rows - 1) - old_row
-                    current_tetromino.y = new_row * BLOCK_SIZE
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                # Получаем позицию мыши во время клика
-                mouse_pos = event.pos
-                # если нажали в диапозоне кнопки clear, очищаем
-                if rect_clear.collidepoint(mouse_pos):
-                    screen_state = init_screen_state()
-                    current_tetromino = get_random_shape(inverted_mode)
-                    score = 0
-                    is_paused = False
-                    show_sprites = False
-                    music_player = MusicPlayer("../data/music/game_music1.mp3")
-                    music_player.play_game_music()
-                # переворот
-                if rect_reverse.collidepoint(mouse_pos):
-                    inverted_mode = not inverted_mode
-                    screen_state = screen_state[::-1]
-                    rows = len(screen_state)
-                    old_row = current_tetromino.y // BLOCK_SIZE
-                    new_row = (rows - 1) - old_row
-                    current_tetromino.y = new_row * BLOCK_SIZE
+                    elif event.key == pygame.K_q:
+                        is_paused = False
+                        show_sprites = False
+                        screen_state = init_screen_state()
+                        current_tetromino = get_random_shape(inverted_mode)
+                        score = 0
+                    # переворот
+                    elif event.key == pygame.K_e:
+                        inverted_mode = not inverted_mode
+                        screen_state = screen_state[::-1]
+                        rows = len(screen_state)
+                        old_row = current_tetromino.y // BLOCK_SIZE
+                        new_row = (rows - 1) - old_row
+                        current_tetromino.y = new_row * BLOCK_SIZE
+                except Exception as e:
+                    print(e)
+            try:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    # Получаем позицию мыши во время клика
+                    mouse_pos = event.pos
+                    # если нажали в диапозоне кнопки clear, очищаем
+                    if rect_clear.collidepoint(mouse_pos):
+                        screen_state = init_screen_state()
+                        current_tetromino = get_random_shape(inverted_mode)
+                        score = 0
+                        is_paused = False
+                        show_sprites = False
+                    # переворот
+                    if rect_reverse.collidepoint(mouse_pos):
+                        inverted_mode = not inverted_mode
+                        screen_state = screen_state[::-1]
+                        rows = len(screen_state)
+                        old_row = current_tetromino.y // BLOCK_SIZE
+                        new_row = (rows - 1) - old_row
+                        current_tetromino.y = new_row * BLOCK_SIZE
+            except Exception as e:
+                print(e)
         if not running:
             break
 
         screen.fill((0, 0, 0))
         draws()
         ALL_SPRITES.draw(screen)
+        try:
+            if not is_paused:
+                # Рисуем падающую фигуру
+                current_tetromino.draw()
 
-        if not is_paused:
-            # Рисуем падающую фигуру
-            current_tetromino.draw()
-
-            # Обновляем позицию фигуры
-            if not check_collision(current_tetromino, screen_state, inverted_mode):
-                if not inverted_mode:
-                    current_tetromino.y += BLOCK_SIZE
+                # Обновляем позицию фигуры
+                if not check_collision(current_tetromino, screen_state, inverted_mode):
+                    if not inverted_mode:
+                        current_tetromino.y += BLOCK_SIZE
+                    else:
+                        current_tetromino.y -= BLOCK_SIZE
                 else:
-                    current_tetromino.y -= BLOCK_SIZE
-            else:
-                # добавляем и очищаем экран
-                add_to_screen_state(current_tetromino, screen_state)
-                # считаем очки
-                if not is_paused:
-                    score += 50
-                screen_state, len_clear = change_screen_state(screen_state, inverted_mode)
-                if len_clear == 1 or len_clear == 2:
-                    score += (1000 * len_clear)
-                elif len_clear == 3:
-                    score += (1000 * len_clear) + 500
-                elif len_clear == 4:
-                    score += (1000 * (len_clear + 1))
-                if max_score <= score:
-                    max_score = score
-                # победа
+                    # добавляем и очищаем экран
+                    add_to_screen_state(current_tetromino, screen_state)
+                    # считаем очки
+                    if not is_paused:
+                        score += 50
+                    screen_state, len_clear = change_screen_state(screen_state, inverted_mode)
+                    if len_clear == 1 or len_clear == 2:
+                        score += (1000 * len_clear)
+                    elif len_clear == 3:
+                        score += (1000 * len_clear) + 500
+                    elif len_clear == 4:
+                        score += (1000 * (len_clear + 1))
+                    if max_score <= score:
+                        max_score = score
+                    # победа
+                    if score >= 15000:
+                        show_sprites = True
+                    elif check_top_collision(screen_state, inverted_mode):  # проверка достигла ли фигура самого верха
+                        is_paused = True
+                        show_sprites = True
+                    else:
+                        current_tetromino = get_random_shape(inverted_mode)
+            # победа/проигрышь рисуем
+            if show_sprites:
                 if score >= 15000:
-                    show_sprites = True
-                elif check_top_collision(screen_state, inverted_mode):  # проверка достигла ли фигура самого верха
+                    ALL_SPRITES1.draw(screen)
                     is_paused = True
-                    show_sprites = True
-                else:
-                    current_tetromino = get_random_shape(inverted_mode)
-        # победа/проигрышь рисуем
-        if show_sprites:
-            if score >= 15000:
-                ALL_SPRITES1.draw(screen)
-                is_paused = True
-            elif check_top_collision(screen_state, inverted_mode):
-                ALL_SPRITES2.draw(screen)
+                elif check_top_collision(screen_state, inverted_mode):
+                    ALL_SPRITES2.draw(screen)
+        except Exception as e:
+            print(e)
 
         # рисуем score
         font = pygame.font.Font(None, 36)

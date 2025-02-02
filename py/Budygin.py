@@ -163,113 +163,121 @@ class Menu:
                 if pygame.get_init():
                     # если сейчас состояние меню
                     if sostoanie == "menu":
-                        screen.fill(BLACK)
-                        # Отслеживание событий
-                        for event in pygame.event.get():
-                            if event.type == pygame.QUIT:
-                                running = False
+                        try:
+                            screen.fill(BLACK)
+                            # Отслеживание событий
+                            for event in pygame.event.get():
+                                if event.type == pygame.QUIT:
+                                    running = False
 
-                            if event.type == pygame.MOUSEBUTTONDOWN:
-                                # Получаем позицию мыши во время клика
-                                mouse_pos = event.pos
-                                # если нажали в диапозоне кнопки play, открываем другое меню
-                                if rect_play.collidepoint(mouse_pos):
-                                    sostoanie = "game"
-                                # если нажали в диапозоне кнопки exit, открываем другое меню
-                                if rect_exit.collidepoint(mouse_pos):
-                                    sostoanie = "exit"
-                                # если нажали в диапозоне кнопки rules, открываем лургое меню
-                                if rect_rules.collidepoint(mouse_pos):
-                                    sostoanie = "rules"
+                                if event.type == pygame.MOUSEBUTTONDOWN:
+                                    # Получаем позицию мыши во время клика
+                                    mouse_pos = event.pos
+                                    # если нажали в диапозоне кнопки play, открываем другое меню
+                                    if rect_play.collidepoint(mouse_pos):
+                                        sostoanie = "game"
+                                    # если нажали в диапозоне кнопки exit, открываем другое меню
+                                    if rect_exit.collidepoint(mouse_pos):
+                                        sostoanie = "exit"
+                                    # если нажали в диапозоне кнопки rules, открываем лургое меню
+                                    if rect_rules.collidepoint(mouse_pos):
+                                        sostoanie = "rules"
 
-                        # добовляем фон
-                        ALL_SPRITES.draw(screen)
+                            # добовляем фон
+                            ALL_SPRITES.draw(screen)
 
-                        # Рисуем  падающую фигуру
-                        self.draw_shape(current_shape, current_x, current_y, color)
+                            # Рисуем  падающую фигуру
+                            self.draw_shape(current_shape, current_x, current_y, color)
 
-                        # Обновляем  позицию фигуры
-                        current_y += BLOCK_SIZE
+                            # Обновляем  позицию фигуры
+                            current_y += BLOCK_SIZE
 
-                        # Если фигура достигла низа экрана, создаем новую
-                        if current_y + len(current_shape) * BLOCK_SIZE > SCREEN_HEIGHT:
-                            current_shape = self.get_random_shape()
-                            current_x = (SCREEN_WIDTH // 2) - (len(current_shape[0]) * BLOCK_SIZE // 2)
-                            current_y = 0
-                            color = COLORS[random.randint(0, 14)]
+                            # Если фигура достигла низа экрана, создаем новую
+                            if current_y + len(current_shape) * BLOCK_SIZE > SCREEN_HEIGHT:
+                                current_shape = self.get_random_shape()
+                                current_x = (SCREEN_WIDTH // 2) - (len(current_shape[0]) * BLOCK_SIZE // 2)
+                                current_y = 0
+                                color = COLORS[random.randint(0, 14)]
 
-                        # добовляем вторую фигуру
-                        if (current_y + len(current_shape) * BLOCK_SIZE) * 1.25 > SCREEN_HEIGHT and not k:
-                            current_shape1 = self.get_random_shape()
-                            current_x1 = 5
-                            current_y1 = 0
-                            color1 = COLORS[random.randint(0, 14)]
-                            k = True
+                            # добовляем вторую фигуру
+                            if (current_y + len(current_shape) * BLOCK_SIZE) * 1.25 > SCREEN_HEIGHT and not k:
+                                current_shape1 = self.get_random_shape()
+                                current_x1 = 5
+                                current_y1 = 0
+                                color1 = COLORS[random.randint(0, 14)]
+                                k = True
 
-                        # обновляем координаты 2 фигуры и рисуем ее
-                        if k:
-                            self.draw_shape(current_shape1, current_x1, current_y1, color1)
-                            current_y1 += BLOCK_SIZE
-                            # если фигура достигла низа, то разришаем рисовать следующую
-                            if current_y1 + len(current_shape) * BLOCK_SIZE > SCREEN_HEIGHT:
-                                k = False
+                            # обновляем координаты 2 фигуры и рисуем ее
+                            if k:
+                                self.draw_shape(current_shape1, current_x1, current_y1, color1)
+                                current_y1 += BLOCK_SIZE
+                                # если фигура достигла низа, то разришаем рисовать следующую
+                                if current_y1 + len(current_shape) * BLOCK_SIZE > SCREEN_HEIGHT:
+                                    k = False
 
-                        # добовляем третью фигуру
-                        if (current_y + len(current_shape) * BLOCK_SIZE) * 2 > SCREEN_HEIGHT and not k1:
-                            current_shape2 = self.get_random_shape()
-                            current_x2 = SCREEN_WIDTH - (len(current_shape[0]) * BLOCK_SIZE) - 5
-                            current_y2 = 0
-                            color2 = COLORS[random.randint(0, 14)]
-                            k1 = True
+                            # добовляем третью фигуру
+                            if (current_y + len(current_shape) * BLOCK_SIZE) * 2 > SCREEN_HEIGHT and not k1:
+                                current_shape2 = self.get_random_shape()
+                                current_x2 = SCREEN_WIDTH - (len(current_shape[0]) * BLOCK_SIZE) - 5
+                                current_y2 = 0
+                                color2 = COLORS[random.randint(0, 14)]
+                                k1 = True
 
-                        # обновляем координаты 3 фигуры и рисуем ее
-                        if k1:
-                            self.draw_shape(current_shape2, current_x2, current_y2, color2)
-                            current_y2 += BLOCK_SIZE
-                            # если фигура достигла низа, то разришаем рисовать следующую
-                            if current_y2 + len(current_shape) * BLOCK_SIZE > SCREEN_HEIGHT:
-                                k1 = False
+                            # обновляем координаты 3 фигуры и рисуем ее
+                            if k1:
+                                self.draw_shape(current_shape2, current_x2, current_y2, color2)
+                                current_y2 += BLOCK_SIZE
+                                # если фигура достигла низа, то разришаем рисовать следующую
+                                if current_y2 + len(current_shape) * BLOCK_SIZE > SCREEN_HEIGHT:
+                                    k1 = False
 
-                        font = pygame.font.Font(None, 36)
-                        score_text = font.render(f"Max_score: {str(max_score)}", True, WHITE)
-                        screen.blit(score_text, (10, 550))
-                        # добавляем кнопки
-                        ALL_SPRITES1.draw(screen)
-                        pygame.display.flip()
-                        # Задержка, чтобы фигуры падали не слишком быстро
-                        clock.tick(10)
+                            font = pygame.font.Font(None, 36)
+                            score_text = font.render(f"Max_score: {str(max_score)}", True, WHITE)
+                            screen.blit(score_text, (10, 550))
+                            # добавляем кнопки
+                            ALL_SPRITES1.draw(screen)
+                            pygame.display.flip()
+                            # Задержка, чтобы фигуры падали не слишком быстро
+                            clock.tick(10)
+                        except Exception as e:
+                            print(e)
                     # если состояние правила, открывем дургое окно
                     elif sostoanie == "rules":
-
-                        a = Rules_c()
-                        a.rulse_f()
-                        # если закрыли, то возвращаем меню
-                        sostoanie = "menu"
-                        pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-                        pygame.display.set_caption("Тетрис")
-
-                    elif sostoanie == "exit":
-
-                        a = Exit_c()
-                        b = a.exit_f()
-                        # закрывем все
-                        if not b:
-                            running = False
-                        # если ззахотели вернуться, то возвращаем меню
-                        else:
+                        try:
+                            a = Rules_c()
+                            a.rulse_f()
+                            # если закрыли, то возвращаем меню
                             sostoanie = "menu"
                             pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
                             pygame.display.set_caption("Тетрис")
-
+                        except Exception as e:
+                            print(e)
+                    elif sostoanie == "exit":
+                        try:
+                            a = Exit_c()
+                            b = a.exit_f()
+                            # закрывем все
+                            if not b:
+                                running = False
+                            # если ззахотели вернуться, то возвращаем меню
+                            else:
+                                sostoanie = "menu"
+                                pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+                                pygame.display.set_caption("Тетрис")
+                        except Exception as e:
+                            print(e)
                     elif sostoanie == "game":
-                        from Rezvushkin import game_loop
-                        game_loop(screen_state=game_screnn_state, score=score, max_score=max_score,
-                                  inverted_mode=inverted_mode)
+                        try:
+                            from Rezvushkin import game_loop
+                            game_loop(screen_state=game_screnn_state, score=score, max_score=max_score,
+                                      inverted_mode=inverted_mode)
 
-                        # если закрыли, то возвращаем меню
-                        sostoanie = "menu"
-                        pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-                        pygame.display.set_caption("Тетрис")
+                            # если закрыли, то возвращаем меню
+                            sostoanie = "menu"
+                            pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+                            pygame.display.set_caption("Тетрис")
+                        except Exception as e:
+                            print(e)
                 else:
                     running = False
 
@@ -278,6 +286,8 @@ class Menu:
         except KeyboardInterrupt:
             pygame.quit()
             sys.exit()
+        except Exception as e:
+            print(e)
 
 
 if __name__ == "__main__":
